@@ -15,7 +15,7 @@ export default function SiteSafetySection({
     <div className="border-2 border-red-200 rounded-lg p-6 bg-red-50">
       <h2 className="text-2xl font-bold text-red-800 mb-6 border-b-2 border-red-300 pb-2">
         <span className="bg-red-100 px-3 py-1 rounded-lg">
-          ۶. ایمنی کارگاه (موارد ۱۴ تا ۲۸)
+          ۶. ایمنی کارگاه
         </span>
       </h2>
 

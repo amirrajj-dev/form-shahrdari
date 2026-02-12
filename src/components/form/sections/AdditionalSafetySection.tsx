@@ -15,7 +15,7 @@ export default function AdditionalSafetySection({
     <div className="border-2 border-indigo-200 rounded-lg p-6 bg-indigo-50">
       <h2 className="text-2xl font-bold text-indigo-800 mb-6 border-b-2 border-indigo-300 pb-2">
         <span className="bg-indigo-100 px-3 py-1 rounded-lg">
-          ۷. ایمنی اضافی (صفحه ۳)
+          ۷. ایمنی اضافی 
         </span>
       </h2>
 
