@@ -1,0 +1,716 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+  direction: rtl;
+}
+
+/* Override browser autofill/autocomplete input styling - prevents white background when selecting suggestions */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-base-content) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-base-100) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Standard :autofill for future browser support */
+input:autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-base-100) inset !important;
+  box-shadow: 0 0 0 1000px var(--color-base-100) inset !important;
+}
+
+@theme {
+  --font-nazanin: var(--font-nazanin);
+  --font-bnazanin: var(--font-bnazanin);
+}
+
+/* Print Styles - Only show form sections */
+@media print {
+  /* Hide header, footer, and all unnecessary elements */
+  header,
+  footer,
+  nav,
+  .no-print {
+    display: none !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* Ensure form container takes full width */
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+    font-size: 12pt;
+  }
+
+  /* Main container - CRITICAL: Override min-h-screen which causes blank page */
+  body > div {
+    background: white !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Override any min-height classes that might force blank page */
+  .min-h-screen,
+  [class*="min-h-"] {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  /* CRITICAL: Prevent root div from creating blank page */
+  body > div::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+  }
+
+  /* Main content area */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Form wrapper */
+  .print-form-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+    border-radius: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* CRITICAL: Prevent container from creating blank page */
+  .print-form-container::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+  }
+
+  /* Form container styling */
+  form {
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 15px !important;
+    padding-bottom: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* Ensure all form sections are visible and properly formatted */
+  form > div:not(.no-print) {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 25px;
+    padding: 15px !important;
+  }
+
+  /* Remove bottom margin from last visible section - CRITICAL for preventing blank page */
+  form > div:not(.no-print):last-child,
+  form > div:not(.no-print):last-of-type {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 15px !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Section headers styling */
+  form h2 {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18pt;
+    font-weight: bold;
+  }
+
+  form h3 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  /* Section title spans */
+  form h2 span {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+
+  /* Input fields styling for print */
+  input[type="text"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="number"],
+  textarea,
+  select {
+    border: 1px solid #333 !important;
+    /* background: white !important; */
+    padding: 5px 10px !important;
+    font-size: 11pt;
+    width: 100%;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color: #ffffff !important;
+  }
+
+  form textarea {
+    min-height: 60px;
+  }
+
+  /* Checkbox and radio styling */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Labels styling */
+  label {
+    font-weight: bold;
+    color: #000 !important;
+    font-size: 11pt;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* Override for smaller labels (like in section 6) */
+  label.text-xs {
+    font-size: 10pt !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    color: #000 !important;
+  }
+
+  /* Section background colors - keep them for better readability */
+  .border-blue-200,
+  .bg-blue-50 {
+    background-color: #eff6ff !important;
+    border: 2px solid #93c5fd !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-green-200,
+  .bg-green-50 {
+    background-color: #f0fdf4 !important;
+    border: 2px solid #86efac !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-purple-200,
+  .bg-purple-50 {
+    background-color: #faf5ff !important;
+    border: 2px solid #c4b5fd !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-amber-200,
+  .bg-amber-50 {
+    background-color: #fffbeb !important;
+    border: 2px solid #fde68a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-emerald-200,
+  .bg-emerald-50 {
+    background-color: #ecfdf5 !important;
+    border: 2px solid #6ee7b7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-red-200,
+  .bg-red-50 {
+    background-color: #fef2f2 !important;
+    border: 2px solid #fca5a5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-indigo-200,
+  .bg-indigo-50 {
+    background-color: #eef2ff !important;
+    border: 2px solid #a5b4fc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-gray-300,
+  .bg-gray-50 {
+    background-color: #f9fafb !important;
+    border: 2px solid #d1d5db !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Section title backgrounds */
+  .bg-blue-100 {
+    background-color: #dbeafe !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-green-100 {
+    background-color: #dcfce7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-purple-100 {
+    background-color: #f3e8ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-amber-100 {
+    background-color: #fef3c7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-emerald-100 {
+    background-color: #d1fae5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-red-100 {
+    background-color: #fee2e2 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-indigo-100 {
+    background-color: #e0e7ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .bg-gray-100 {
+    background-color: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Text colors for print - make them darker for readability */
+  .text-blue-800 {
+    color: #1e3a8a !important;
+  }
+  .text-green-800 {
+    color: #166534 !important;
+  }
+  .text-purple-800 {
+    color: #6b21a8 !important;
+  }
+  .text-amber-800 {
+    color: #92400e !important;
+  }
+  .text-emerald-800 {
+    color: #065f46 !important;
+  }
+  .text-red-800 {
+    color: #991b1b !important;
+  }
+  .text-indigo-800 {
+    color: #3730a3 !important;
+  }
+  .text-gray-800 {
+    color: #1f2937 !important;
+  }
+
+  /* Remove shadows and effects */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure proper page size and prevent blank pages */
+  @page {
+    margin: 1.5cm;
+    size: A4;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Let the browser calculate height naturally to avoid extra pages */
+  html,
+  body {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* CRITICAL: Prevent any element from forcing a page break after the form */
+  *:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* CRITICAL: Remove any height that might force blank page */
+  html::after,
+  body::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body > div,
+  main,
+  .print-form-container,
+  form {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Prevent blank page by ensuring no overflow */
+  form {
+    overflow: visible !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* CRITICAL: Ensure main container doesn't create blank page */
+  main {
+    page-break-after: auto !important;
+    break-after: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  /* Remove any trailing elements that might cause blank page */
+  main::after,
+  .print-form-container::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Control orphans and widows */
+  * {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Force background graphics for all elements */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  html,
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Prevent page breaks inside important sections */
+  form > div:not(.no-print) {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* CRITICAL: Prevent blank page by ensuring form doesn't exceed page height */
+  form {
+    display: block !important;
+  }
+
+  /* Ensure no pseudo-elements create extra space */
+  form::before,
+  form::after,
+  .print-form-container::after,
+  main::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Ensure last section doesn't create blank page - CRITICAL */
+  form > div:not(.no-print):last-child,
+  form > div:not(.no-print):last-of-type {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 15px !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Remove any trailing space that might cause blank page */
+  form > div:not(.no-print):last-child::after,
+  form > div:not(.no-print):last-of-type::after,
+  form::after {
+    display: none !important;
+    content: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Prevent form from creating extra height */
+  form:after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* CRITICAL: Remove all padding from main container in print */
+  main {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Remove padding from max-w container */
+  .max-w-7xl,
+  .max-w-7xl > * {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Ensure root div doesn't create blank page */
+  body > div.min-h-screen {
+    min-height: auto !important;
+    height: auto !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Remove any bottom spacing from all containers */
+  body > div,
+  body > div > main,
+  body > div > main > div,
+  body > div > main > div > div {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Ensure form container has no bottom spacing */
+  .print-form-container {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Remove bottom padding from form */
+  form {
+    padding-bottom: 15px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* CRITICAL: Ensure form height matches content exactly - no extra space */
+  form,
+  .print-form-container,
+  main,
+  body > div {
+    height: auto !important;
+    min-height: auto !important;
+  }
+
+  /* CRITICAL: Remove any bottom margin/padding from the very last element */
+  form > div:not(.no-print):last-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 15px !important;
+  }
+
+  /* CRITICAL: Ensure no element forces content beyond page */
+  * {
+    max-height: none !important;
+  }
+
+  /* CRITICAL: Prevent page break after last content */
+  form > div:not(.no-print):last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Grid layouts for print */
+  .grid {
+    display: grid !important;
+  }
+
+  /* Button styling - hide interactive buttons */
+  button {
+    display: none !important;
+  }
+
+  /* Show selected project stages as text badges */
+  button[type="button"].bg-blue-100 {
+    display: inline-block !important;
+    border: 1px solid #1e40af !important;
+    padding: 4px 10px !important;
+    margin: 3px !important;
+    background: #dbeafe !important;
+    color: #1e3a8a !important;
+    font-size: 10pt;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* Hide unselected stages */
+  button[type="button"].bg-gray-100 {
+    display: none !important;
+  }
+
+  /* White boxes inside sections */
+  .bg-white {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    padding: 10px !important;
+    margin-bottom: 8px;
+  }
+
+  /* Ensure RTL direction is maintained */
+  * {
+    direction: rtl;
+  }
+
+  /* Print-friendly spacing */
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  /* Remove margin from last child in space-y containers - CRITICAL fix */
+  .space-y-8 > *:last-child:not(.no-print),
+  .space-y-8 > *:last-of-type:not(.no-print),
+  form > .space-y-8 > *:last-child:not(.no-print) {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Override space-y-8 for last visible child */
+  form.space-y-8 > div:not(.no-print):last-child {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Remove space-y margin from all children in print */
+  .space-y-8 > * + *:not(.no-print) {
+    margin-top: 1.5rem;
+  }
+
+  /* Ensure no margin after last visible section */
+  form.space-y-8 > div:not(.no-print):last-child {
+    margin-top: 0 !important;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .space-y-2 > * + * {
+    margin-top: 0.25rem;
+  }
+
+  /* Gap utilities */
+  .gap-6 {
+    gap: 1rem !important;
+  }
+  .gap-4 {
+    gap: 0.75rem !important;
+  }
+  .gap-3 {
+    gap: 0.5rem !important;
+  }
+
+  /* Error messages - hide them in print */
+  .text-red-500.text-xs {
+    display: none !important;
+  }
+
+  /* Ensure text-xs labels are visible and readable in print */
+  label.text-xs {
+    display: block !important;
+    font-size: 10pt !important;
+    color: #000 !important;
+    font-weight: 500 !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Ensure proper text wrapping */
+  p,
+  span,
+  div,
+  label {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Fix flex containers for labels in print */
+  .flex.items-center {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .flex.items-center label {
+    flex: 1 !important;
+    margin: 0 !important;
+  }
+
+  /* Ensure checkbox labels are visible */
+  .bg-white .flex.items-center label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #000 !important;
+  }
+
+  /* Make sure all text in section 6 is visible */
+  .bg-red-50 label,
+  .bg-red-50 .text-xs {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #000 !important;
+    font-size: 10pt !important;
+  }
+}
