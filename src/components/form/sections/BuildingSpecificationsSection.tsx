@@ -94,6 +94,7 @@ export default function BuildingSpecificationsSection({
           </label>
           <input
             type="number"
+            min="1"
             {...register("additionalFloors")}
             className="input input-bordered w-full focus:ring-2 focus:ring-amber-500"
             placeholder="تعداد طبقات اجرا شده"

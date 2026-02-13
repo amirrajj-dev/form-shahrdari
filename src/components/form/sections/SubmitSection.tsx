@@ -7,13 +7,32 @@ interface SubmitSectionProps {
   onReset: () => void;
 }
 
+const RESET_AFTER_PRINT_STORAGE_KEY = "form-reset-after-print-preference";
+
 export default function SubmitSection({
   isValid,
   onReset,
 }: SubmitSectionProps) {
-  const [resetAfterPrint, setResetAfterPrint] = useState(false);
+  // Load initial state from localStorage
+  const [resetAfterPrint, setResetAfterPrint] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(RESET_AFTER_PRINT_STORAGE_KEY);
+      return saved === "true";
+    }
+    return false;
+  });
   const [showResetConfirmation, setShowResetConfirmation] = useState(false);
   const printDialogOpenedRef = useRef(false);
+
+  // Save to localStorage whenever resetAfterPrint changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        RESET_AFTER_PRINT_STORAGE_KEY,
+        resetAfterPrint.toString(),
+      );
+    }
+  }, [resetAfterPrint]);
 
   useEffect(() => {
     const handleBeforePrint = () => {
@@ -63,8 +82,17 @@ export default function SubmitSection({
     <>
       {/* Reset Confirmation Modal */}
       {showResetConfirmation && (
-        <div className="no-print bg-black/50 flex items-center justify-center z-50"
-        style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, height: '100vh', width: '100vw' }}
+        <div
+          className="no-print bg-black/50 flex items-center justify-center z-50"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "100vh",
+            width: "100vw",
+          }}
         >
           <div className="bg-base-100 rounded-lg p-6 max-w-md mx-4 shadow-2xl">
             <h3 className="text-xl font-bold mb-4 text-center">بازنشانی فرم</h3>
