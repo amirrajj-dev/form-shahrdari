@@ -33,6 +33,7 @@ export default function BuildingForm({
     formState: { errors, isSubmitting, isValid },
     watch,
     setValue,
+    reset,
   } = useForm<BuildingInspectionFormData>({
     resolver: zodResolver(buildingInspectionSchema),
     defaultValues: getDefaultFormValues(), // This will use all defaults from schema
@@ -75,6 +76,11 @@ export default function BuildingForm({
     onSubmit(data);
   };
 
+  const handleFormReset = () => {
+    reset(getDefaultFormValues());
+    setSelectedStages([]);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
@@ -93,7 +99,7 @@ export default function BuildingForm({
         selectedStages={selectedStages}
         onStageToggle={handleStageToggle}
       />
-      <SubmitSection isValid={isValid} />
+      <SubmitSection isValid={isValid} onReset={handleFormReset} />
     </form>
   );
 }
