@@ -3,16 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 
 interface SubmitSectionProps {
-  isValid: boolean;
   onReset: () => void;
 }
 
 const RESET_AFTER_PRINT_STORAGE_KEY = "form-reset-after-print-preference";
 
-export default function SubmitSection({
-  isValid,
-  onReset,
-}: SubmitSectionProps) {
+export default function SubmitSection({ onReset }: SubmitSectionProps) {
   // Load initial state from localStorage
   const [resetAfterPrint, setResetAfterPrint] = useState(() => {
     if (typeof window !== "undefined") {
@@ -138,11 +134,7 @@ export default function SubmitSection({
           <button
             type="button"
             onClick={handlePrint}
-            disabled={!isValid}
-            className={`btn btn-lg btn-outline btn-warning text-white px-10 py-4 text-lg ${
-              !isValid ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title={!isValid ? "لطفا تمامی فیلدهای الزامی را تکمیل کنید" : ""}
+            className="btn btn-lg btn-outline btn-warning text-white px-10 py-4 text-lg"
           >
             <svg
               className="w-6 h-6 ml-2"

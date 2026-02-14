@@ -30,7 +30,7 @@ export default function BuildingForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
     watch,
     setValue,
     reset,
@@ -99,7 +99,7 @@ export default function BuildingForm({
         selectedStages={selectedStages}
         onStageToggle={handleStageToggle}
       />
-      <SubmitSection isValid={isValid} onReset={handleFormReset} />
+      <SubmitSection onReset={handleFormReset} />
     </form>
   );
 }
